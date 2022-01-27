@@ -1,0 +1,7 @@
+{
+  "name": "gh-actions-test",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
