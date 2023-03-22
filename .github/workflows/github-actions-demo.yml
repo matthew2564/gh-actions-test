@@ -1,12 +1,14 @@
 name: Bump schema version
 
 on:
+  push:
   pull_request:
     branches:
       - master
-    types:
-      - opened
+#    types:
+#      - opened
 
+jobs:
   bump-schema:
     #    if: contains(github.event.pull_request.title, 'Auto test schema bump @')
     runs-on: ubuntu-latest
