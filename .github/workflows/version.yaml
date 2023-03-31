@@ -15,8 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@minor') }}
     steps:
+      - name: Read branch name
+        env:
+          BRANCH: ${{ github.ref_name }}
+        id: branch-name
+        run: echo "::set-output name=fragment::${BRANCH##*/
+
       - uses: actions/checkout@v3
-        ref: ${{ github.ref }}
+        with:
+          ref: ${{ steps.branch-name.outputs.fragment }}
 
       - name: Read .nvmrc
         id: nvm
@@ -49,8 +56,15 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@patch') }}
     steps:
+      - name: Read branch name
+        env:
+          BRANCH: ${{ github.ref_name }}
+        id: branch-name
+        run: echo "::set-output name=fragment::${BRANCH##*/
+
       - uses: actions/checkout@v3
-        ref: ${{ github.ref }}
+        with:
+          ref: ${{ steps.branch-name.outputs.fragment }}
 
       - name: Read .nvmrc
         id: nvm
