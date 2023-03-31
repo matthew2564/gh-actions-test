@@ -4,14 +4,13 @@ on: issue_comment
 
 jobs:
   pr_commented:
-    name: PR comment
-
-    if: ${{ github.event.issue.pull_request }}
-
     runs-on: ubuntu-latest
 
     steps:
-      - env:
-          NUMBER: ${{ github.event.issue.number }}
-      - run: |
-          echo A comment on PR $NUMBER
+      - name: Echo github event
+        if: ${{ github.event.issue.pull_request }}
+        run: |
+          echo hello
+          echo ${{ github.event.issue.pull_request }}
+          echo ${{ github.event.comment.body }}
+
