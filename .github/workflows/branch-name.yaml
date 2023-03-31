@@ -11,14 +11,6 @@ jobs:
         run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
         id: extract_branch
 
-      #      - uses: actions/checkout@v3
-      #        with:
-      #          ref: ${{ steps.extract_branch-name.outputs.branch }}
-
-      - name: Branch name
-        run: |
-          echo running on branch ${GITHUB_REF##*/}
-
       - uses: actions/checkout@v3
         with:
           ref: ${{ steps.extract_branch.outputs.branch }}
