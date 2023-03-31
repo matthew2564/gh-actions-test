@@ -6,17 +6,6 @@ on:
 #      - 'release-**'
 
 jobs:
-  bump-major:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@major') }}
-    steps:
-      - name: Bump major version
-        run: |
-          npm version major
-          npm run sync-versions
-          echo "PACKAGE_JSON=$(jq -c . < package.json)" >> $GITHUB_ENV
-          echo ${{ fromJson(env.PACKAGE_JSON).version }}
-
   bump-minor:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@minor') }}
@@ -25,8 +14,6 @@ jobs:
         run: |
           npm version minor
           npm run sync-versions
-          echo "PACKAGE_JSON=$(jq -c . < package.json)" >> $GITHUB_ENV
-          echo ${{ fromJson(env.PACKAGE_JSON).version }}
 
   bump-patch:
     runs-on: ubuntu-latest
@@ -36,5 +23,3 @@ jobs:
         run: |
           npm version patch
           npm run sync-versions
-          echo "PACKAGE_JSON=$(jq -c . < package.json)" >> $GITHUB_ENV
-          echo ${{ fromJson(env.PACKAGE_JSON).version }}
