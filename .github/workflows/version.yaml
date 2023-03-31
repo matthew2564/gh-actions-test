@@ -8,9 +8,11 @@ jobs:
 
     steps:
       - name: Echo github event
+
         if: ${{ github.event.issue.pull_request }}
+
         run: |
           echo hello
-          echo ${{ github.event.issue.pull_request }}
+          echo ${{ toJson(github.event.issue.pull_request) }}
           echo ${{ github.event.comment.body }}
 
