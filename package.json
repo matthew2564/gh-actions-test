@@ -12,6 +12,7 @@
     "e2e": "ng e2e",
     "sync-versions": "./scripts/set-xcode-version.sh"
   },
+  "// test": "a",
   "private": true,
   "dependencies": {
     "@angular/common": "~13.0.0",
