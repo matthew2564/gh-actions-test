@@ -10,6 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@minor') }}
     steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.11.0'
+
       - name: Bump minor version
         run: |
           npm version minor
@@ -19,6 +26,13 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@patch') }}
     steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.11.0'
+
       - name: Bump patch version
         run: |
           npm version patch
