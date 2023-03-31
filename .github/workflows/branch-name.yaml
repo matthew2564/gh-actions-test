@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Extract branch name
         shell: bash
-        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
         id: extract_branch
 
       #      - uses: actions/checkout@v3
@@ -18,6 +18,7 @@ jobs:
       - name: Branch name
         run: |
           echo running on branch ${GITHUB_REF##*/}
+          echo ${{ steps.extract_branch.outputs.branch }}
 
       - uses: actions/checkout@v3
         with:
