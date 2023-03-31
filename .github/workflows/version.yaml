@@ -3,16 +3,26 @@ name: Deploy
 on: issue_comment
 
 jobs:
-  pr_commented:
-    runs-on: ubuntu-latest
+  runs-on: ubuntu-latest
 
+  bump-major:
+    if: ${{ github.event.issue.pull_request }}
     steps:
-      - name: Echo github event
-
-        if: ${{ github.event.issue.pull_request }}
-
+      - name: Bump major version
         run: |
-          echo hello
-          echo ${{ toJson(github) }}
+          echo ${{ github.event.comment.body }}
+
+  bump-minor:
+    if: ${{ github.event.issue.pull_request }}
+    steps:
+      - name: Bump minor version
+        run: |
+          echo ${{ github.event.comment.body }}
+
+  bump-patch:
+    if: ${{ github.event.issue.pull_request }}
+    steps:
+      - name: Bump patch version
+        run: |
           echo ${{ github.event.comment.body }}
 

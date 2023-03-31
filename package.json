@@ -9,7 +9,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "set-version": "./scripts/set-xcode-version.sh $n"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +28,7 @@
     "@ionic/angular": "^6.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
+    "xml2js": "^0.4.23",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
