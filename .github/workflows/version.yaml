@@ -17,10 +17,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Read .nvmrc
+        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '18.11.0'
+          node-version: ${{ steps.nvm.outputs.NVMRC }}  
 
       - name: Install dependencies
         run: npm ci
@@ -46,10 +49,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Read .nvmrc
+        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '18.11.0'
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
 
       - name: Install dependencies
         run: npm ci
