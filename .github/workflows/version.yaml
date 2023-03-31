@@ -17,6 +17,11 @@ jobs:
         with:
           node-version: '18.11.0'
 
+      - name: Git credentials setup
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+
       - name: Bump minor version
         run: |
           npm version minor
@@ -32,6 +37,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.11.0'
+
+      - name: Git credentials setup
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
 
       - name: Bump patch version
         run: |
