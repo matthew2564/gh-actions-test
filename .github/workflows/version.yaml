@@ -10,18 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get PR SHA
-        id: sha
-        uses: actions/github-script@v4
-        with:
-        result-encoding: string
+      - name: Echo github event
         runs: |
           echo hello
           echo ${{ github.event.issue.pull_request }}
           echo ${{ github.event.comment.body }}
 
-        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/deploy'}}
-
+      - name: Get PR SHA
+        id: sha
+        uses: actions/github-script@v4
+        with:
+        result-encoding: string
         script: |
           const { owner, repo, number } = context.issue;
           const pr = await github.pulls.get({
