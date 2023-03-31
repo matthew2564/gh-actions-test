@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/deploy'}}
 
     steps:
       - name: Get PR SHA
@@ -16,6 +15,13 @@ jobs:
         uses: actions/github-script@v4
         with:
         result-encoding: string
+        runs: |
+          echo hello
+          echo ${{ github.event.issue.pull_request }}
+          echo ${{ github.event.comment.body }}
+
+        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/deploy'}}
+
         script: |
           const { owner, repo, number } = context.issue;
           const pr = await github.pulls.get({
@@ -24,6 +30,7 @@ jobs:
             pull_number: number,
           });
           return pr.data.head.sha
+
       - uses: actions/checkout@v2
         with:
           ref: ${{ steps.sha.outputs.result }}
