@@ -1,9 +1,14 @@
 const fs = require('fs');
 const xml2js = require('xml2js');
+const semver = require('semver');
 
 const [newVersion] = process.argv.slice(2);
 if (!newVersion) {
   throw new Error('newVersion is undefined');
+}
+
+if (!semver.valid(newVersion)) {
+  throw new Error(`Semver version invalid: ${newVersion}`);
 }
 
 const configFile = 'config.xml';
