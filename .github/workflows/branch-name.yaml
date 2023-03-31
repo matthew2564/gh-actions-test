@@ -18,7 +18,6 @@ jobs:
       - name: Branch name
         run: |
           echo running on branch ${GITHUB_REF##*/}
-          echo ${{ ${GITHUB_REF##*/} }}
 
       - uses: actions/checkout@v3
         with:
