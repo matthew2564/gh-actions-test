@@ -19,7 +19,7 @@ jobs:
         env:
           BRANCH: ${{ github.ref_name }}
         id: branch-name
-        run: echo "::set-output name=fragment::${BRANCH##*/
+        run: echo "::set-output name=fragment::${BRANCH##*/"
 
       - uses: actions/checkout@v3
         with:
@@ -60,7 +60,7 @@ jobs:
         env:
           BRANCH: ${{ github.ref_name }}
         id: branch-name
-        run: echo "::set-output name=fragment::${BRANCH##*/
+        run: echo "::set-output name=fragment::${BRANCH##*/"
 
       - uses: actions/checkout@v3
         with:
