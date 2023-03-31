@@ -15,15 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@minor') }}
     steps:
-      - name: Read branch name
-        env:
-          BRANCH: ${{ github.ref_name }}
-        id: branch-name
-        run: echo ::set-output name=fragment::${BRANCH##*/}
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+        id: extract_branch
 
       - uses: actions/checkout@v3
         with:
-          ref: ${{ steps.branch-name.outputs.fragment }}
+          ref: ${{ steps.extract_branch.outputs.branch }}
 
       - name: Read .nvmrc
         id: nvm
@@ -56,15 +55,14 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@patch') }}
     steps:
-      - name: Read branch name
-        env:
-          BRANCH: ${{ github.ref_name }}
-        id: branch-name
-        run: echo ::set-output name=fragment::${BRANCH##*/}
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+        id: extract_branch
 
       - uses: actions/checkout@v3
         with:
-          ref: ${{ steps.branch-name.outputs.fragment }}
+          ref: ${{ steps.extract_branch.outputs.branch }}
 
       - name: Read .nvmrc
         id: nvm
