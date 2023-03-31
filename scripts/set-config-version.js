@@ -1,8 +1,7 @@
 const fs = require('fs');
 const xml2js = require('xml2js');
-
+const { version: newVersion } = require('../package.json');
 const configFile = 'config.xml';
-const [newVersion] = process.argv.slice(2);
 
 // Read config.xml
 fs.readFile(configFile, 'utf8', (err, xml) => {
