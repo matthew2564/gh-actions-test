@@ -18,8 +18,7 @@ jobs:
       - name: Branch name
         run: |
           echo running on branch ${GITHUB_REF##*/}
-          echo ${{ steps.extract_branch.outputs.branch }}
 
       - uses: actions/checkout@v3
         with:
-          ref: echo ${GITHUB_REF##*/}
+          ref: echo ${{ steps.extract_branch.outputs.branch }}
