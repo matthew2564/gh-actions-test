@@ -9,6 +9,6 @@ echo "Setting version to: ${VERSION}"
 node scripts/set-config-version.js ${VERSION}
 
 # Update plist files
-#cd ios/App
-#xcrun agvtool new-marketing-version ${VERSION}
-#xcrun agvtool new-version -all ${VERSION}
+cd ios/App
+xcrun agvtool new-marketing-version ${VERSION}
+xcrun agvtool new-version -all ${VERSION}
