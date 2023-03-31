@@ -8,29 +8,33 @@ on:
 jobs:
   bump-major:
     runs-on: ubuntu-latest
-    if: ${{ github.event.issue.pull_request }}
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@major') }}
     steps:
       - name: Bump major version
         run: |
-          echo ${{ contains(github.event.comment.body, 'bump@major') }}
-          echo ${{ github.event.comment.body }}
-#          npm version major
-#          npm run sync-versions
+          npm version major
+          npm run sync-versions
+          echo "PACKAGE_JSON=$(jq -c . < package.json)" >> $GITHUB_ENV
+          echo ${{ fromJson(env.PACKAGE_JSON).version }}
 
-#  bump-minor:
-#    runs-on: ubuntu-latest
-#    if: ${{ github.event.issue.pull_request && contains(github.event.action, 'bump@minor') }}
-#    steps:
-#      - name: Bump minor version
-#        run: |
-#          npm version minor
-#          npm run sync-versions
-#
-#  bump-patch:
-#    runs-on: ubuntu-latest
-#    if: ${{ github.event.issue.pull_request && contains(github.event.action, 'bump@patch') }}
-#    steps:
-#      - name: Bump patch version
-#        run: |
-#          npm version patch
-#          npm run sync-versions
+  bump-minor:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@minor') }}
+    steps:
+      - name: Bump minor version
+        run: |
+          npm version minor
+          npm run sync-versions
+          echo "PACKAGE_JSON=$(jq -c . < package.json)" >> $GITHUB_ENV
+          echo ${{ fromJson(env.PACKAGE_JSON).version }}
+
+  bump-patch:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'bump@patch') }}
+    steps:
+      - name: Bump patch version
+        run: |
+          npm version patch
+          npm run sync-versions
+          echo "PACKAGE_JSON=$(jq -c . < package.json)" >> $GITHUB_ENV
+          echo ${{ fromJson(env.PACKAGE_JSON).version }}
