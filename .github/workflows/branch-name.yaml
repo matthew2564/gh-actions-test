@@ -18,8 +18,8 @@ jobs:
       - name: Branch name
         run: |
           echo running on branch ${GITHUB_REF##*/}
-          echo ${{ toJson(steps.extract_branch-name) }}
+          echo ${{ ${GITHUB_REF##*/} }}
 
       - uses: actions/checkout@v3
         with:
-          ref: ${GITHUB_REF##*/}
+          ref: echo ${GITHUB_REF##*/}
