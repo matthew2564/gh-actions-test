@@ -1,6 +1,11 @@
 const fs = require('fs');
 const xml2js = require('xml2js');
-const { version: newVersion } = require('../package.json');
+
+const [newVersion] = process.argv.slice(2);
+if (!newVersion) {
+  throw new Error('newVersion is undefined');
+}
+
 const configFile = 'config.xml';
 
 // Read config.xml
