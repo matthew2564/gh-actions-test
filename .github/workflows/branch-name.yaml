@@ -21,4 +21,4 @@ jobs:
 
       - uses: actions/checkout@v3
         with:
-          ref: echo ${{ steps.extract_branch.outputs.branch }}
+          ref: ${{ steps.extract_branch.outputs.branch }}
