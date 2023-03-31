@@ -1,38 +1,17 @@
 name: Deploy
 
-on:
-  issue_comment:
-    types:
-      - created
+on: issue_comment
 
 jobs:
-  deploy:
+  pr_commented:
+    name: PR comment
+
+    if: ${{ github.event.issue.pull_request }}
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Echo github event
-        run: |
-          echo hello
-          echo ${{ github.event.issue.pull_request }}
-          echo ${{ github.event.comment.body }}
-
-#      - name: Get PR SHA
-#        id: sha
-#        uses: actions/github-script@v4
-#        with:
-#        result-encoding: string
-#        script: |
-#          const { owner, repo, number } = context.issue;
-#          const pr = await github.pulls.get({
-#            owner,
-#            repo,
-#            pull_number: number,
-#          });
-#          return pr.data.head.sha
-#
-#      - uses: actions/checkout@v2
-#        with:
-#          ref: ${{ steps.sha.outputs.result }}
-
-#      - name: Run deployment
-#        run: make deploy
+      - env:
+          NUMBER: ${{ github.event.issue.number }}
+      - run: |
+          echo A comment on PR $NUMBER
