@@ -1,18 +1,34 @@
-name: Deploy
+name: Bump version
 
-on: issue_comment
+on:
+  issue_comment
+#    branches:
+#      - 'release-**'
 
 jobs:
-  pr_commented:
+  bump-major:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.issue.pull_request && contains(github.event.action, 'bump@major') }}
     steps:
-      - name: Echo github event
-
-        if: ${{ github.event.issue.pull_request }}
-
+      - name: Bump major version
         run: |
-          echo hello
-          echo ${{ toJson(github.event.issue.pull_request) }}
-          echo ${{ github.event.comment.body }}
+          npm version major
+          npm run sync-versions
 
+  bump-minor:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request && contains(github.event.action, 'bump@minor') }}
+    steps:
+      - name: Bump minor version
+        run: |
+          npm version minor
+          npm run sync-versions
+
+  bump-patch:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request && contains(github.event.action, 'bump@patch') }}
+    steps:
+      - name: Bump patch version
+        run: |
+          npm version patch
+          npm run sync-versions
