@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Echo github event
-        runs: |
+        run: |
           echo hello
           echo ${{ github.event.issue.pull_request }}
           echo ${{ github.event.comment.body }}
@@ -34,5 +34,5 @@ jobs:
         with:
           ref: ${{ steps.sha.outputs.result }}
 
-      - name: Run deployment
-        run: make deploy
+#      - name: Run deployment
+#        run: make deploy
