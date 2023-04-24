@@ -3,7 +3,7 @@ name: Bump version
 on:
   issue_comment
   #    branches:
-  #      - 'release-**'
+#      - 'release-**'
 
 env:
   CI_COMMIT_EMAIL: username@users.noreply.github.com
@@ -64,30 +64,30 @@ jobs:
         with:
           ref: ${{ steps.extract_branch.outputs.branch }}
 
-      - name: Read .nvmrc
-        id: nvm
-        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
-
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ steps.nvm.outputs.NVMRC }}
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Git credentials setup
-        run: |
-          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
-
-      - name: Bump patch version
-        run: |
-          npm version patch
-          npm run sync-versions
-
-      - name: GIT commit & push all changed files
-        run: |
-          git commit -a -m "${{ env.CI_COMMIT_MESSAGE }}"
-          git push
+#      - name: Read .nvmrc
+#        id: nvm
+#        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+#
+#      - name: Set up Node.js version
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: ${{ steps.nvm.outputs.NVMRC }}
+#
+#      - name: Install dependencies
+#        run: npm ci
+#
+#      - name: Git credentials setup
+#        run: |
+#          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+#          git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
+#
+#      - name: Bump patch version
+#        run: |
+#          npm version patch
+#          npm run sync-versions
+#
+#      - name: GIT commit & push all changed files
+#        run: |
+#          git commit -a -m "${{ env.CI_COMMIT_MESSAGE }}"
+#          git push
 
