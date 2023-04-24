@@ -7,6 +7,12 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  constructor() {
+    this.helloThere();
+  }
+
+  helloThere() {
+    console.log('hello');
+  }
 
 }
