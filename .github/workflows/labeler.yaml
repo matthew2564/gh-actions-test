@@ -4,11 +4,13 @@ on: pull_request
 
 jobs:
   triage:
-    with:
-      configuration-path: .github/labeler.yaml
+    runs-on: ubuntu-latest
+
     permissions:
       contents: read
       pull-requests: write
-    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/labeler@v4
+        with:
+          configuration-path: .github/labeler.yaml
