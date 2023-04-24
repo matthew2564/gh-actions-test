@@ -1,18 +1,29 @@
-# Add 'test' label to any change to *.spec.js files within the source dir
-test:
-  - src/**/*.spec.ts
+## Add 'test' label to any change to *.spec.js files within the source dir
+#test:
+#  - src/**/*.spec.ts
+#
+## Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
+#source:
+#  - any: ['src/**/*', '!src/docs/*']
+#
+## Add 'frontend` label to any change to *.js files as long as the `main.js` hasn't changed
+#frontend:
+#  - any: ['src/**/*.ts']
+#    all: ['!src/main.js']
+#
+#home:
+#  - any: ['src/app/home/*']
+#
+#test-centre-journal:
+#  - any: ['src/store/test-centre-journal/**/*', 'src/app/pages/test-centre-journal/**/*']
 
-# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
-source:
-  - any: ['src/**/*', '!src/docs/*']
+# This is used with the label workflow which
+# will triage pull requests and apply a label based on the
+# paths that are modified in the pull request.
+#
+# For more information, see:
+# https://github.com/actions/labeler
 
-# Add 'frontend` label to any change to *.js files as long as the `main.js` hasn't changed
-frontend:
-  - any: ['src/**/*.ts']
-    all: ['!src/main.js']
-
-home:
-  - any: ['src/app/home/*']
-
-test-centre-journal:
-  - any: ['src/store/test-centre-journal/**/*', 'src/app/pages/test-centre-journal/**/*']
+capacitor:
+#  - any: [ 'ios/**/!(Info.plist)', 'capacitor.config.ts' ]
+  - any: [ 'src/environment/**/!(environment.prod.ts)', 'capacitor.config.json' ]
