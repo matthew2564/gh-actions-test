@@ -15,6 +15,4 @@ test-centre-journal:
   - any: ['src/store/test-centre-journal/**/*', 'src/app/pages/test-centre-journal/**/*']
 
 home:
-  - any: ['src/app/home/**/*', 'src/theme/**/*']
-
-
+  - any: ['src/app/home', 'src/theme']
