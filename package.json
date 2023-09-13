@@ -13,6 +13,7 @@
     "sync-versions": "./scripts/set-xcode-version.sh",
     "prepare": "husky install"
   },
+  "// test": "a",
   "private": true,
   "dependencies": {
     "@angular/common": "~13.0.0",
