@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Start composite
-        uses: ./.github/workflows/action.yaml
+        uses: ./.github/actions/get-component-microservices
         id: my-composite-action
         with:
           component: 'api'
