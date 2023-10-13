@@ -1,0 +1,17 @@
+name: Test composite output
+
+on: push
+
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Start composite
+        uses: ./.github/actions/get-component-microservices
+        id: my-composite-action
+        with:
+          component: 'api'
+      - run: echo "${{ steps.my-composite-action.outputs.list }}"
