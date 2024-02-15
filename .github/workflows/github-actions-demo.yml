@@ -28,6 +28,9 @@ jobs:
 
       - name: 📝 Compare versions
         run: |
+          echo "BASE_VERSION=$BASE_VERSION"
+          echo "$PR_VERSION=$PR_VERSION"
+
           if ! dpkg --compare-versions "$PR_VERSION" gt "$BASE_VERSION"; then
             echo "Version in 'package.json' must be increased. Ensure 'npm i' is run to update the 'package-lock.json'."
             exit 1
