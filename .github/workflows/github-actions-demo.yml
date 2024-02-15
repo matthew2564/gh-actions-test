@@ -1,20 +1,54 @@
-name: GitHub Actions Demo
+name: CI
 
-on: [push]
+on:
+  workflow_dispatch:
+  pull_request:
 
 jobs:
-  Explore-GitHub-Actions:
+  check-version-bumped:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: 📨 Checkout base branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
 
+      - name: 🔍 Get version from base branch
+        id: base_version
+        run: echo "BASE_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
+      - name: 📨 Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: 🔍 Get version from PR branch
+        id: pr_version
+        run: echo "PR_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
+      - name: 📝 Compare versions
+        run: |
+          if ! dpkg --compare-versions "$PR_VERSION" gt "$BASE_VERSION"; then
+            echo "Version in `package.json` must be increased. Ensure `npm i` is run to update the `package-lock.json`."
+            exit 1
+          fi
+
+  run-ci:
+    needs: check-version-bumped
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📨 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Read .nvmrc
+        id: nvm
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_ENV
+
+      - name: ⚙️ Setup Node.js ${{ env.NVMRC }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NVMRC }}
+          cache: 'npm'
+
+      - name: ➕ Install dependencies
+        run: npm ci
