@@ -2,8 +2,8 @@ name: Update Dependencies
 
 on:
 #  schedule:
-#    # Runs at 08:00 on the first day of every month
-#    - cron: '0 8 1 * *'
+#    # Runs at 05:00 on the first day of every month
+#    - cron: '0 5 1 * *'
   workflow_dispatch:
     inputs:
       update-type:
@@ -28,8 +28,8 @@ jobs:
         with:
           node-version: ${{ env.NVMRC }}
 
-      - name: Install npm-check-updates & check for updates for ${{ github.event.inputs.update-type }} version
-        run: npx --yes npm-check-updates --doctor -u --target ${{ github.event.inputs.update-type }}
+#      - name: Install npm-check-updates & check for updates for ${{ github.event.inputs.update-type }} version
+#        run: npx --yes npm-check-updates --doctor -u --target ${{ github.event.inputs.update-type }}
 
       - name: Bump package version
         run: npm version ${{ github.event.inputs.update-type }} --no-git-tag-version
