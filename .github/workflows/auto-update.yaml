@@ -50,16 +50,15 @@ jobs:
           script: |
             const title = '[Automated] Update ${{ github.event.inputs.update-type }} dependencies';
             const body = 'This is an auto-generated PR with dependency updates and version bump performed by `npm-check-updates`.';
-            const branch = `build/${{ github.event.inputs.update-type }}-dependencies-and-bump-${Date.now()}`;
+            const branch = `build/${{ github.event.inputs.update-type }}-dependencies-bump-${Date.now()}`;
             const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
             const base = process.env.GITHUB_REF.split('/').slice(-1)[0];
-            await github.action.createRef({
-              owner,
-              repo,
-              ref: `refs/heads/${branch}`,
-              sha: context.sha
-            });
-            await github.action.pulls.create({
+
+            console.log('branch', branch);
+            console.log('owner', owner);
+            console.log('repo', repo);
+
+            const resp = await github.rest.pulls.create({
               owner,
               repo,
               title,
@@ -67,3 +66,5 @@ jobs:
               head: branch,
               base,
             });
+
+            console.log('resp', resp);
