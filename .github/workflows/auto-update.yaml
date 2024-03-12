@@ -53,12 +53,7 @@ jobs:
             const branch = `build/${{ github.event.inputs.update-type }}-dependencies-and-bump-${Date.now()}`;
             const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
             const base = process.env.GITHUB_REF.split('/').slice(-1)[0];
-            await github.rest.issues.createRef({
-              owner,
-              repo,
-              ref: `refs/heads/${branch}`,
-              sha: context.sha
-            });
+
             await github.rest.pulls.create({
               owner,
               repo,
