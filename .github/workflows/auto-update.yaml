@@ -64,7 +64,6 @@ jobs:
                 repo,
                 title,
                 body,
-                head: branch,
                 base,
               });
                         console.log('resp', resp);
