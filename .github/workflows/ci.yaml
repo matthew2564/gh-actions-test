@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  check-version-bumped:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📨 Checkout base branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+
+      - name: 🔍 Get version from base branch
+        id: base_version
+        run: |
+          cat package.json
+          git branch --show-current
+          echo "BASE_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+      - name: 📨 Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: 🔍 Get version from PR branch
+        id: pr_version
+        run: echo "PR_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
+      - name: 📝 Compare versions
+        run: |
+          if ! dpkg --compare-versions "$PR_VERSION" gt "$BASE_VERSION"; then
+            echo "Version in 'package.json' must be increased. Ensure 'npm i' is run to update the 'package-lock.json'."
+            echo "BASE_VERSION=$BASE_VERSION"
+            echo "PR_VERSION=$PR_VERSION"
+            exit 1
+          fi
+  run-ci:
+    needs: check-version-bumped
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📨 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Read .nvmrc
+        id: nvm
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_ENV
+
+      - name: ⚙️ Setup Node.js ${{ env.NVMRC }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NVMRC }}
+          cache: 'npm'
+
+      - name: ➕ Install dependencies
+        run: npm ci
