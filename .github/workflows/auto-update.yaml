@@ -1,9 +1,9 @@
 name: Update Dependencies
 
 on:
-#  schedule:
-#    # Runs at 05:00 on the first day of every month
-#    - cron: '0 5 1 * *'
+  #  schedule:
+  #    # Runs at 05:00 on the first day of every month
+  #    - cron: '0 5 1 * *'
   workflow_dispatch:
     inputs:
       update-type:
@@ -28,8 +28,8 @@ jobs:
         with:
           node-version: ${{ env.NVMRC }}
 
-#      - name: Install npm-check-updates & check for updates for ${{ github.event.inputs.update-type }} version
-#        run: npx --yes npm-check-updates --doctor -u --target ${{ github.event.inputs.update-type }}
+      #      - name: Install npm-check-updates & check for updates for ${{ github.event.inputs.update-type }} version
+      #        run: npx --yes npm-check-updates --doctor -u --target ${{ github.event.inputs.update-type }}
 
       - name: Bump package version
         run: npm version ${{ github.event.inputs.update-type }} --no-git-tag-version
@@ -58,13 +58,17 @@ jobs:
             console.log('owner', owner);
             console.log('repo', repo);
 
-            const resp = await github.rest.pulls.create({
-              owner,
-              repo,
-              title,
-              body,
-              head: branch,
-              base,
-            });
+            try {
+              const resp = await github.rest.pulls.create({
+                owner,
+                repo,
+                title,
+                body,
+                head: branch,
+                base,
+              });
+                        console.log('resp', resp);
 
-            console.log('resp', resp);
+            } catch (err) {
+              console.error('matt err', err);
+            }
