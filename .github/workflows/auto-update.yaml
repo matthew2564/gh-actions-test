@@ -54,6 +54,10 @@ jobs:
             const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
             const base = process.env.GITHUB_REF.split('/').slice(-1)[0];
 
+            console.log('branch', branch);
+            console.log('owner', owner);
+            console.log('repo', repo);
+
             await github.rest.pulls.create({
               owner,
               repo,
