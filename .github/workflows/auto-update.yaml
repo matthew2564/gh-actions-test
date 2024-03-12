@@ -70,5 +70,5 @@ jobs:
                         console.log('resp', resp);
 
             } catch (err) {
-              console.error('matt err', err);
+              console.error('matt err', err.response.data.errors);
             }
