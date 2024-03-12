@@ -1,0 +1,69 @@
+name: Update Dependencies
+
+on:
+#  schedule:
+#    # Runs at 08:00 on the first day of every month
+#    - cron: '0 8 1 * *'
+  workflow_dispatch:
+    inputs:
+      update-type:
+        description: 'Update Type (major, minor, patch)'
+        required: false
+        default: 'minor'
+
+jobs:
+  update-deps-and-bump-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: 🔍 Read .nvmrc
+        id: nvm
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_ENV
+
+      - name: ⚙️ Setup Node.js ${{ env.NVMRC }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NVMRC }}
+
+      - name: Install npm-check-updates & check for updates for ${{ github.event.inputs.update-type }} version
+        run: npx --yes npm-check-updates --doctor -u --target ${{ github.event.inputs.update-type }}
+
+      - name: Bump package version
+        run: npm version ${{ github.event.inputs.update-type }} --no-git-tag-version
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "build: update ${{ github.event.inputs.update-type }} dependencies"
+          git push
+
+      - name: Create Pull Request
+        uses: actions/github-script@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          script: |
+            const title = '[Automated] Update ${{ github.event.inputs.update-type }} dependencies';
+            const body = 'This is an auto-generated PR with dependency updates and version bump performed by `npm-check-updates`.';
+            const branch = `build/${{ github.event.inputs.update-type }}-dependencies-and-bump-${Date.now()}`;
+            const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+            const base = process.env.GITHUB_REF.split('/').slice(-1)[0];
+            await github.action.createRef({
+              owner,
+              repo,
+              ref: `refs/heads/${branch}`,
+              sha: context.sha
+            });
+            await github.action.pulls.create({
+              owner,
+              repo,
+              title,
+              body,
+              head: branch,
+              base,
+            });
